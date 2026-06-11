@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment</title>
+</head>
+<body>
+
+<h2>💰 Unlock Listings - KSh 350</h2>
+
+<p>Pay via M-Pesa:</p>
+
+<p><b>Paybill:</b> YOUR_PAYBILL</p>
+<p><b>Account:</b> VacantFinder</p>
+
+<p>After payment enter code:</p>
+
+<input id="code" placeholder="M-Pesa code">
+<button onclick="unlock()">Submit</button>
+
+<p id="msg"></p>
+
+<script>
+function unlock(){
+  localStorage.setItem("paid","true");
+  document.getElementById("msg").innerText="Unlocked!";
+  window.location.href="listings.html";
+}
+</script>
+
+</body>
+</html>
