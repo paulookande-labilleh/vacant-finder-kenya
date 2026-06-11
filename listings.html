@@ -1,3 +1,9 @@
+<script>
+  if (localStorage.getItem("paid") !== "true") {
+    alert("🔒 Pay KSh 350 to access listings");
+    window.location.href = "index.html";
+  }
+</script>
 <!DOCTYPE html>
 <html>
 <head>
