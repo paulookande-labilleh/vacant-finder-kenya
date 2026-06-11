@@ -1,0 +1,27 @@
+window.filterData = function(){
+
+  const loc = document.getElementById("location").value.toLowerCase();
+  const type = document.getElementById("type").value.toLowerCase();
+  const range = document.getElementById("rentRange").value;
+
+  const filtered = allData.filter(p => {
+
+    const price = parseInt(p.rent);
+
+    let inRange = true;
+
+    if(range === "1000-2500") inRange = price >= 1000 && price <= 2500;
+    if(range === "2500-4500") inRange = price > 2500 && price <= 4500;
+    if(range === "4500-6500") inRange = price > 4500 && price <= 6500;
+    if(range === "6500-10000") inRange = price > 6500 && price <= 10000;
+    if(range === "10000-15000") inRange = price > 10000 && price <= 15000;
+
+    return (
+      (loc === "" || p.location.toLowerCase().includes(loc)) &&
+      (type === "" || p.type.toLowerCase().includes(type)) &&
+      inRange
+    );
+  });
+
+  render(filtered);
+}
