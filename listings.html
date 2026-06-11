@@ -12,10 +12,20 @@
 
     .card{
       background:white;
-      padding:15px;
       margin-bottom:10px;
       border-radius:10px;
+      overflow:hidden;
       box-shadow:0 2px 5px rgba(0,0,0,0.15);
+    }
+
+    .card img{
+      width:100%;
+      height:200px;
+      object-fit:cover;
+    }
+
+    .content{
+      padding:10px;
     }
 
     button{
@@ -24,7 +34,6 @@
       background:#1b5e20;
       color:white;
       border:none;
-      border-radius:8px;
     }
   </style>
 </head>
@@ -64,12 +73,15 @@
 
       listingsDiv.innerHTML += `
         <div class="card">
-          <h3>${data.type}</h3>
-          <p>📍 Location: ${data.location}</p>
-          <p>💰 Rent: KSh ${data.rent}</p>
-          <button onclick="window.open('https://wa.me/${data.phone}')">
-            Contact Landlord
-          </button>
+          <img src="${data.image}" />
+          <div class="content">
+            <h3>${data.type}</h3>
+            <p>📍 ${data.location}</p>
+            <p>💰 KSh ${data.rent}</p>
+            <button onclick="window.open('https://wa.me/${data.phone}')">
+              Contact Landlord
+            </button>
+          </div>
         </div>
       `;
     });
