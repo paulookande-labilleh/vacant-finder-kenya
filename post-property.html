@@ -1,38 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Post Property</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Post Property</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
 <h1>➕ Post Property</h1>
 
-<form>
+<form id="propertyForm">
 
-<p>Property Type</p>
-<input type="text">
+  <p>Property Type</p>
+  <input type="text" id="type" required>
 
-<p>Location</p>
-<input type="text">
+  <p>Location</p>
+  <input type="text" id="location" required>
 
-<p>Rent</p>
-<input type="number">
+  <p>Rent (KSh)</p>
+  <input type="number" id="rent" required>
 
-<p>Phone Number</p>
-<input type="text">
+  <p>Phone Number</p>
+  <input type="text" id="phone" required>
 
-<br><br>
+  <br><br>
 
-<button type="submit">
-Submit Listing
-</button>
+  <button type="submit">Submit Listing</button>
 
 </form>
 
-<br>
+<p id="msg"></p>
 
-<a href="index.html">← Back Home</a>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } 
+  from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDgETwOznaxDJN98DljftV18AOMAYQZ-QE",
+    authDomain: "vacant-finder-kenya.firebaseapp.com",
+    projectId: "vacant-finder-kenya",
+    storageBucket: "vacant-finder-kenya.firebasestorage.app",
+    messagingSenderId: "797542745576",
+    appId: "1:797542745576:web:e581d296dfeb52772bd05d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const form = document.getElementById("propertyForm");
+  const msg = document.getElementById("msg");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    try {
+      await addDoc(collection(db, "properties"), {
+        type: document.getElementById("type").value,
+        location: document.getElementById("location").value,
+        rent: document.getElementById("rent").value,
+        phone: document.getElementById("phone").value,
+        createdAt: new Date()
+      });
+
+      msg.innerText = "✅ Property submitted successfully!";
+      form.reset();
+
+    } catch (error) {
+      console.log(error);
+      msg.innerText = "❌ Error submitting property";
+    }
+  });
+
+</script>
 
 </body>
 </html>
