@@ -1,99 +1,62 @@
-<script>
-  if (localStorage.getItem("paid") !== "true") {
-    alert("🔒 Pay KSh 350 to access listings");
-    window.location.href = "index.html";
-  }
-</script>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Property Listings</title>
+  <title>Listings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body{
-      font-family: Arial;
-      background:#f5f5f5;
-      padding:10px;
-    }
-
-    .card{
-      background:white;
-      margin-bottom:10px;
-      border-radius:10px;
-      overflow:hidden;
-      box-shadow:0 2px 5px rgba(0,0,0,0.15);
-    }
-
-    .card img{
-      width:100%;
-      height:200px;
-      object-fit:cover;
-    }
-
-    .content{
-      padding:10px;
-    }
-
-    button{
-      padding:10px;
-      width:100%;
-      background:#1b5e20;
-      color:white;
-      border:none;
-    }
+    body{font-family:Arial;background:#f5f5f5;padding:10px;}
+    .card{background:white;margin-bottom:10px;border-radius:10px;overflow:hidden;}
+    img{width:100%;height:200px;object-fit:cover;}
+    .c{padding:10px;}
+    button{width:100%;padding:10px;background:green;color:white;border:none;}
   </style>
 </head>
-
 <body>
 
-<h1>🏠 Available Properties</h1>
-
+<h1>🏠 Approved Listings</h1>
 <div id="listings">Loading...</div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-  import { getFirestore, collection, getDocs }
-  from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDgETwOznaxDJN98DljftV18AOMAYQZ-QE",
-    authDomain: "vacant-finder-kenya.firebaseapp.com",
-    projectId: "vacant-finder-kenya",
-    storageBucket: "vacant-finder-kenya.firebasestorage.app",
-    messagingSenderId: "797542745576",
-    appId: "1:797542745576:web:e581d296dfeb52772bd05d"
-  };
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "vacant-finder-kenya.firebaseapp.com",
+  projectId: "vacant-finder-kenya"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  const listingsDiv = document.getElementById("listings");
+const q = query(collection(db,"properties"), where("status","==","approved"));
 
-  async function loadListings() {
-    const querySnapshot = await getDocs(collection(db, "properties"));
+const container = document.getElementById("listings");
 
-    listingsDiv.innerHTML = "";
+async function load(){
+  const snap = await getDocs(q);
+  container.innerHTML = "";
 
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
+  snap.forEach(doc=>{
+    const d = doc.data();
 
-      listingsDiv.innerHTML += `
-        <div class="card">
-          <img src="${data.image}" />
-          <div class="content">
-            <h3>${data.type}</h3>
-            <p>📍 ${data.location}</p>
-            <p>💰 KSh ${data.rent}</p>
-            <button onclick="window.open('https://wa.me/${data.phone}')">
-              Contact Landlord
-            </button>
-          </div>
+    container.innerHTML += `
+      <div class="card">
+        <img src="${d.image}">
+        <div class="c">
+          <h3>${d.type}</h3>
+          <p>${d.location}</p>
+          <p>KSh ${d.rent}</p>
+          <button onclick="window.open('https://wa.me/${d.phone}')">
+            Contact
+          </button>
         </div>
-      `;
-    });
-  }
+      </div>
+    `;
+  });
+}
 
-  loadListings();
+load();
 </script>
 
 </body>
