@@ -3,35 +3,33 @@
 <head>
   <title>Post Property</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     body{
       font-family:Arial;
       margin:0;
       background:linear-gradient(135deg,#1b5e20,#43a047);
-      color:white;
     }
 
     .container{
       max-width:500px;
-      margin:auto;
+      margin:30px auto;
       background:white;
-      color:black;
       padding:20px;
-      margin-top:30px;
       border-radius:15px;
     }
 
-    h1{
+    h2{
       text-align:center;
       color:#1b5e20;
     }
 
-    input{
+    input, select{
       width:100%;
       padding:12px;
       margin:8px 0;
-      border:1px solid #ccc;
       border-radius:10px;
+      border:1px solid #ccc;
     }
 
     button{
@@ -41,8 +39,8 @@
       color:white;
       border:none;
       border-radius:10px;
+      font-weight:bold;
       font-size:16px;
-      margin-top:10px;
     }
 
     button:hover{
@@ -59,21 +57,102 @@
 <body>
 
 <div class="container">
-  <h1>➕ Post Property</h1>
+  <h2>➕ Post Property</h2>
 
   <form id="propertyForm">
 
-    <input type="text" id="type" placeholder="Property Type" required>
-    <input type="text" id="location" placeholder="Location" required>
-    <input type="number" id="rent" placeholder="Rent (KSh)" required>
-    <input type="text" id="phone" placeholder="Phone (2547...)" required>
-    <input type="file" id="image" required>
+    <!-- ROOM TYPE -->
+    <select id="type" required>
+      <option value="">Select Room Type</option>
+      <option>Single Room</option>
+      <option>Double Room</option>
+      <option>Bedsitter</option>
+      <option>Hostel</option>
+      <option>1 Bedroom</option>
+      <option>2 Bedroom</option>
+      <option>Family Home</option>
+      <option>Land For Sale</option>
+    </select>
 
-    <button type="submit">Submit Listing</button>
+    <!-- LOCATION -->
+    <select id="location" required>
+      <option value="">Select Location</option>
+      <option>Lurambi CBD</option>
+      <option>Lurambi Clutch</option>
+      <option>Lurambi Roundabout</option>
+      <option>Lurambi Mwiyala</option>
+      <option>Koro Matangi</option>
+      <option>Sichirayi</option>
+      <option>Kefinco</option>
+      <option>Town</option>
+      <option>Milimani</option>
+      <option>Teazone</option>
+      <option>Hostels</option>
+      <option>Maraba</option>
+    </select>
+
+    <input type="number" id="rent" placeholder="Rent (KSh)" required>
+
+    <input type="text" id="phone" placeholder="Phone (2547...)" required>
+
+    <input type="file" id="image" accept="image/*" required>
+
+    <button type="submit">Submit Property</button>
   </form>
 
   <p class="msg" id="msg"></p>
 </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "vacant-finder-kenya.firebaseapp.com",
+  projectId: "vacant-finder-kenya",
+  storageBucket: "vacant-finder-kenya.firebasestorage.app",
+  messagingSenderId: "YOUR_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+const form = document.getElementById("propertyForm");
+const msg = document.getElementById("msg");
+
+form.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+
+  try{
+    const file = document.getElementById("image").files[0];
+
+    const storageRef = ref(storage, "properties/" + file.name);
+    await uploadBytes(storageRef, file);
+
+    const imageURL = await getDownloadURL(storageRef);
+
+    await addDoc(collection(db,"properties"),{
+      type: document.getElementById("type").value,
+      location: document.getElementById("location").value,
+      rent: document.getElementById("rent").value,
+      phone: document.getElementById("phone").value,
+      image: imageURL,
+      status: "pending"
+    });
+
+    msg.innerText = "✅ Submitted for admin approval";
+    form.reset();
+
+  } catch(err){
+    console.log(err);
+    msg.innerText = "❌ Upload failed";
+  }
+});
+</script>
 
 </body>
 </html>
