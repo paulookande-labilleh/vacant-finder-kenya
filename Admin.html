@@ -1,29 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Dashboard</title>
+  <title>Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Arial;background:#f5f5f5;padding:10px;}
+    .card{background:white;padding:10px;margin-bottom:10px;border-radius:10px;}
+    button{margin:3px;padding:8px;}
+  </style>
 </head>
 <body>
 
-<h1>🔐 Admin Dashboard</h1>
+<h1>🔐 Admin Panel</h1>
+<div id="list"></div>
 
-<table border="1">
-<tr>
-<th>Property</th>
-<th>Action</th>
-</tr>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-<tr>
-<td>Bedsitter - MMUST</td>
-<td>
-<button>Approve</button>
-<button>Delete</button>
-</td>
-</tr>
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "vacant-finder-kenya.firebaseapp.com",
+  projectId: "vacant-finder-kenya"
+};
 
-</table>
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-<a href="index.html">← Back Home</a>
+const box = document.getElementById("list");
+
+async function load(){
+  const snap = await getDocs(collection(db,"properties"));
+  box.innerHTML="";
+
+  snap.forEach(d=>{
+    const data = d.data();
+
+    box.innerHTML += `
+      <div class="card">
+        <h3>${data.type}</h3>
+        <p>${data.location}</p>
+        <p>Status: ${data.status}</p>
+
+        <button onclick="approve('${d.id}')">Approve</button>
+        <button onclick="reject('${d.id}')">Reject</button>
+      </div>
+    `;
+  });
+}
+
+window.approve = async (id)=>{
+  await updateDoc(doc(db,"properties",id),{status:"approved"});
+  load();
+}
+
+window.reject = async (id)=>{
+  await updateDoc(doc(db,"properties",id),{status:"rejected"});
+  load();
+}
+
+load();
+</script>
 
 </body>
 </html>
