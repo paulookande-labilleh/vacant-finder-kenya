@@ -1,15 +1,174 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Vacant Finder Kenya</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-  <h1>🏠 Vacant Finder Kenya</h1>
-  <p>Find houses, plots and student rooms.</p>
 
-  <button onclick="alert('M-Pesa integration coming next')">
-    Unlock Listing
-  </button>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vacant Finder Kenya</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#1b5e20;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.hero{
+background:white;
+padding:20px;
+text-align:center;
+margin-bottom:10px;
+}
+
+.hero h2{
+margin-bottom:10px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:12px;
+padding:12px;
+}
+
+.card{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+.card img{
+width:100%;
+height:140px;
+object-fit:cover;
+}
+
+.card-content{
+padding:10px;
+}
+
+.card h3{
+margin-bottom:8px;
+}
+
+.btn{
+display:block;
+width:100%;
+padding:10px;
+margin-top:8px;
+border:none;
+border-radius:8px;
+background:#1b5e20;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+footer{
+margin-top:20px;
+background:#1b5e20;
+color:white;
+text-align:center;
+padding:15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>🏠 Vacant Finder Kenya</h1>
+<p>Find Vacant Rooms, Houses & Plots Fast</p>
+</header>
+
+<section class="hero">
+<h2>Kakamega • MMUST • Kenya</h2>
+<p>Unlock landlord contacts and property locations.</p>
+</section>
+
+<div class="grid">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800">
+<div class="card-content">
+<h3>🏠 Houses For Rent</h3>
+<p>Bedsitters, 1BR, 2BR and family houses.</p>
+<button class="btn" onclick="unlock()">View Listing</button>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800">
+<div class="card-content">
+<h3>🛏️ Vacant Rooms</h3>
+<p>Affordable student and town rentals.</p>
+<button class="btn" onclick="unlock()">View Listing</button>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800">
+<div class="card-content">
+<h3>🌍 Plots For Sale</h3>
+<p>Residential and commercial plots.</p>
+<button class="btn" onclick="unlock()">View Listing</button>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800">
+<div class="card-content">
+<h3>🎓 MMUST Housing</h3>
+<p>Student rooms near university.</p>
+<button class="btn" onclick="unlock()">View Listing</button>
+</div>
+</div>
+
+</div>
+
+<section style="padding:15px;">
+<h2>📞 Contact</h2>
+<p>Need help finding a house?</p>
+
+<button class="btn" onclick="whatsapp()">
+💬 Contact via WhatsApp
+</button>
+</section>
+
+<footer>
+Vacant Finder Kenya © 2026
+</footer>
+
+<script>
+function unlock(){
+alert(
+"🔒 Premium Listing\\n\\n" +
+"Payment unlocking system coming soon.\\n" +
+"Future upgrade: M-Pesa unlock."
+);
+}
+
+function whatsapp(){
+window.open(
+"https://wa.me/254742877186",
+"_blank"
+);
+}
+</script>
+
 </body>
 </html>
