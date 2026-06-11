@@ -1,66 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin</title>
+  <title>Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body{font-family:Arial;background:#f5f5f5;padding:10px;}
-    .card{background:white;padding:10px;margin-bottom:10px;border-radius:10px;}
-    button{margin:3px;padding:8px;}
+    body{
+      font-family:Arial;
+      background:#0f172a;
+      color:white;
+      margin:0;
+    }
+
+    .header{
+      background:#1b5e20;
+      padding:20px;
+      text-align:center;
+      font-size:20px;
+    }
+
+    .card{
+      background:#1e293b;
+      margin:10px;
+      padding:15px;
+      border-radius:12px;
+    }
+
+    button{
+      width:48%;
+      padding:10px;
+      border:none;
+      border-radius:8px;
+      margin-top:8px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .approve{
+      background:#22c55e;
+      color:white;
+    }
+
+    .reject{
+      background:#ef4444;
+      color:white;
+    }
   </style>
 </head>
+
 <body>
 
-<h1>🔐 Admin Panel</h1>
+<div class="header">🔐 Admin Dashboard</div>
+
 <div id="list"></div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "vacant-finder-kenya.firebaseapp.com",
-  projectId: "vacant-finder-kenya"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const box = document.getElementById("list");
-
-async function load(){
-  const snap = await getDocs(collection(db,"properties"));
-  box.innerHTML="";
-
-  snap.forEach(d=>{
-    const data = d.data();
-
-    box.innerHTML += `
-      <div class="card">
-        <h3>${data.type}</h3>
-        <p>${data.location}</p>
-        <p>Status: ${data.status}</p>
-
-        <button onclick="approve('${d.id}')">Approve</button>
-        <button onclick="reject('${d.id}')">Reject</button>
-      </div>
-    `;
-  });
-}
-
-window.approve = async (id)=>{
-  await updateDoc(doc(db,"properties",id),{status:"approved"});
-  load();
-}
-
-window.reject = async (id)=>{
-  await updateDoc(doc(db,"properties",id),{status:"rejected"});
-  load();
-}
-
-load();
-</script>
 
 </body>
 </html>
